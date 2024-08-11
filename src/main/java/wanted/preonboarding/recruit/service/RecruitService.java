@@ -10,6 +10,7 @@ import wanted.preonboarding.recruit.Repository.JobPostingRepository;
 import wanted.preonboarding.recruit.domain.JobPosting;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -69,6 +70,12 @@ public class RecruitService {
             // 삭제 중 발생한 예외를 처리하고, 사용자에게 알림
             throw new RuntimeException("Failed to delete job posting with ID " + id, e);
         }
+    }
+
+    public List<JobPosting> getAllJobPostings(){
+
+       return jobPostingRepository.findAll();
+
     }
 
 }

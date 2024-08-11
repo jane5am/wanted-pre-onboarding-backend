@@ -9,6 +9,8 @@ import wanted.preonboarding.dto.UpdateJobPostingtDto;
 import wanted.preonboarding.recruit.domain.JobPosting;
 import wanted.preonboarding.recruit.service.RecruitService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/recruit")
 @RequiredArgsConstructor
@@ -50,6 +52,18 @@ public class RecruitController {
                 .resultMessage("Product created successfully")
                 .build();
         return ResponseEntity.status(201).body(response);
+    }
+
+    // 채용 공고 전체 조회
+    @GetMapping("/jobPostings")
+    public ResponseEntity<ResponseMessage> getAllJobPostings() {
+        List<JobPosting> jobPostings = recruitService.getAllJobPostings();
+        ResponseMessage response = ResponseMessage.builder()
+                .data(jobPostings)
+                .statusCode(200)
+                .resultMessage("Success")
+                .build();
+        return ResponseEntity.ok(response);
     }
 
 }
