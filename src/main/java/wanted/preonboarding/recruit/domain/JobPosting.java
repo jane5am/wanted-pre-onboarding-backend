@@ -20,6 +20,12 @@ public class JobPosting {
     private int companyId;
 
     @Column(nullable = false)
+    private String country;
+
+    @Column(nullable = false)
+    private String region;
+
+    @Column(nullable = false)
     private String position; // 채용 포지션
 
     @Column(nullable = false)

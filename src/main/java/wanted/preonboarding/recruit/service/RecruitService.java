@@ -22,12 +22,13 @@ public class RecruitService {
 
     public JobPosting createJobposting(CreateJobPostingtDto createJobPostingtDto) {
         JobPosting jobPosting = new JobPosting();
-        jobPosting.setCompanyId(createJobPostingtDto.getCompanyId());
+        jobPosting.setCompanyId(createJobPostingtDto.getCompanyId()); // 로그인 기능 구현 시 로그인되어 있는 ID값 가져오게 로직 수정 필요
+        jobPosting.setCountry(createJobPostingtDto.getCountry());
+        jobPosting.setRegion(createJobPostingtDto.getRegion());
         jobPosting.setPosition(createJobPostingtDto.getPosition());
         jobPosting.setCompensation(createJobPostingtDto.getCompensation());
         jobPosting.setDescription(createJobPostingtDto.getDescription());
         jobPosting.setSkill(createJobPostingtDto.getSkill());
-
 
         try {
             return jobPostingRepository.save(jobPosting);
@@ -42,6 +43,8 @@ public class RecruitService {
 
     public JobPosting updateJobPosting(int id, UpdateJobPostingtDto updateJobPostingtDto) {
         JobPosting jobPosting = jobPostingRepository.findById(id).orElseThrow(() -> new RuntimeException("jobPosting not found"));
+        jobPosting.setCountry(updateJobPostingtDto.getCountry());
+        jobPosting.setRegion(updateJobPostingtDto.getRegion());
         jobPosting.setPosition(updateJobPostingtDto.getPosition());
         jobPosting.setCompensation(updateJobPostingtDto.getCompensation());
         jobPosting.setDescription(updateJobPostingtDto.getDescription());

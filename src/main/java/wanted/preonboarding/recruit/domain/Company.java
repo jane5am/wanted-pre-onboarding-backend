@@ -22,9 +22,4 @@ public class Company {
     @Column(nullable = false)
     private String Name;
 
-    @Column(nullable = false)
-    private String country; // 국가
-
-    @Column(nullable = false)
-    private String region; // 지역
 }
