@@ -66,4 +66,16 @@ public class RecruitController {
         return ResponseEntity.ok(response);
     }
 
+    // 채용 공고 검색
+    @GetMapping("/search")
+    public ResponseEntity<ResponseMessage> searchJobPostings(@RequestParam String search) {
+        List<JobPosting> jobPostings = recruitService.searchJobPostings(search);
+        ResponseMessage response = ResponseMessage.builder()
+                .data(jobPostings)
+                .statusCode(200)
+                .resultMessage("Success")
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
 }

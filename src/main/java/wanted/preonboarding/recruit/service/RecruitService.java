@@ -81,4 +81,11 @@ public class RecruitService {
 
     }
 
+    public List<JobPosting> searchJobPostings(String searchTerm) {
+        
+        return jobPostingRepository.searchJobPostings(searchTerm);
+
+    }
+
+
 }
