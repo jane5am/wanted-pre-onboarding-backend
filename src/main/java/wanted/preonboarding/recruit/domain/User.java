@@ -17,8 +17,11 @@ public class User {
     private int id;
 
     @Column(nullable = false)
-    private String userEmail;
+    private String email;
 
     @Column(nullable = false)
-    private String userName;
+    private String password;
+
+    @Column(nullable = false)
+    private String name;
 }

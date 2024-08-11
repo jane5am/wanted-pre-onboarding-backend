@@ -1,15 +1,18 @@
 package wanted.preonboarding.recruit.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wanted.preonboarding.dto.CreateJobPostingtDto;
+import wanted.preonboarding.dto.JobPostingResponseDto;
 import wanted.preonboarding.dto.ResponseMessage;
 import wanted.preonboarding.dto.UpdateJobPostingtDto;
 import wanted.preonboarding.recruit.domain.JobPosting;
 import wanted.preonboarding.recruit.service.RecruitService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/recruit")
@@ -57,7 +60,7 @@ public class RecruitController {
     // 채용 공고 전체 조회
     @GetMapping("/jobPostings")
     public ResponseEntity<ResponseMessage> getAllJobPostings() {
-        List<JobPosting> jobPostings = recruitService.getAllJobPostings();
+        List<JobPostingResponseDto> jobPostings = recruitService.getAllJobPostings();
         ResponseMessage response = ResponseMessage.builder()
                 .data(jobPostings)
                 .statusCode(200)
@@ -76,6 +79,20 @@ public class RecruitController {
                 .resultMessage("Success")
                 .build();
         return ResponseEntity.ok(response);
+    }
+
+    // 체용 공고 상세 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseMessage> getJobPostingById(@PathVariable("id") int id) throws BadRequestException {
+
+        Optional<JobPosting> jobPosting = recruitService.getJobPostingById(id);
+        ResponseMessage response = ResponseMessage.builder()
+                .data(jobPosting.get())
+                .statusCode(200)
+                .resultMessage("Job posting retrieved successfully")
+                .build();
+        return ResponseEntity.ok(response);
+
     }
 
 }

@@ -2,9 +2,11 @@ package wanted.preonboarding.recruit.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.coyote.BadRequestException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import wanted.preonboarding.dto.CreateJobPostingtDto;
+import wanted.preonboarding.dto.JobPostingResponseDto;
 import wanted.preonboarding.dto.UpdateJobPostingtDto;
 import wanted.preonboarding.recruit.Repository.JobPostingRepository;
 import wanted.preonboarding.recruit.domain.JobPosting;
@@ -12,6 +14,8 @@ import wanted.preonboarding.recruit.domain.JobPosting;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,17 +79,37 @@ public class RecruitService {
         }
     }
 
-    public List<JobPosting> getAllJobPostings(){
-
-       return jobPostingRepository.findAll();
-
+    public List<JobPostingResponseDto> getAllJobPostings(){
+        return jobPostingRepository.findAll().stream()
+                .map(jobPosting -> {
+                    JobPostingResponseDto dto = new JobPostingResponseDto();
+                    dto.setId(jobPosting.getId());
+                    dto.setCompanyId(jobPosting.getCompanyId());
+                    dto.setCountry(jobPosting.getCountry());
+                    dto.setRegion(jobPosting.getRegion());
+                    dto.setPosition(jobPosting.getPosition());
+                    dto.setCompensation(jobPosting.getCompensation());
+                    dto.setSkill(jobPosting.getSkill());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
+
     public List<JobPosting> searchJobPostings(String searchTerm) {
-        
+
         return jobPostingRepository.searchJobPostings(searchTerm);
 
     }
 
+    public Optional<JobPosting> getJobPostingById(int jobPostingId) throws BadRequestException {
+
+        Optional<JobPosting> jobPosting = jobPostingRepository.findById(jobPostingId);
+        if (jobPosting.isEmpty()) {
+            throw new BadRequestException("jobPosting not found");
+        }
+
+        return jobPosting;
+    }
 
 }
