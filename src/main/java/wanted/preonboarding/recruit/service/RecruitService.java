@@ -10,6 +10,7 @@ import wanted.preonboarding.recruit.Repository.JobPostingRepository;
 import wanted.preonboarding.recruit.domain.JobPosting;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -56,5 +57,18 @@ public class RecruitService {
         }
     }
 
+    public void deleteJobPosting(int id){
+        // 특정 ID의 JobPosting이 존재하지 않을 경우 NoSuchElementException을 발생시킴
+        jobPostingRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Job posting with ID " + id + " not found"));
+
+        try {
+            // JobPosting을 삭제 시도
+            jobPostingRepository.deleteById(id);
+        } catch (Exception e) {
+            // 삭제 중 발생한 예외를 처리하고, 사용자에게 알림
+            throw new RuntimeException("Failed to delete job posting with ID " + id, e);
+        }
+    }
 
 }

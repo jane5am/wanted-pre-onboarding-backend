@@ -40,4 +40,16 @@ public class RecruitController {
         return ResponseEntity.status(201).body(response);
     }
 
+    // 채용 공고 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseMessage> deleteJobPosting(@PathVariable("id") int id){
+        recruitService.deleteJobPosting(id);
+        ResponseMessage response = ResponseMessage.builder()
+                .data("")
+                .statusCode(201)
+                .resultMessage("Product created successfully")
+                .build();
+        return ResponseEntity.status(201).body(response);
+    }
+
 }
